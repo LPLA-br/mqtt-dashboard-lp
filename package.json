@@ -1,0 +1,16 @@
+{
+  "name": "mqtt-dashboard",
+  "version": "0.1.0",
+  "description": "dashboard mqtt basica",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "LPLA-br",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mqtt": "^5.9.1",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> MQTT DASHBOARD  </title>
+  </head>
+  <body>
+    <h1> DASHBOARD CICLISTICO </h1>
+
+    <h2>RPM</h2>
+    <div id="data"></div>
+
+    <h2>RUMO MAGNÉTICO</h2>
+    <div id="data2"></div>
+
+    <h2>PRESSÃO ATMOSFÉRICA (Pa)</h2>
+    <div id="data3"></div>
+
+    <script type="text/javascript">
+
+      const ws = new WebSocket('ws://127.0.0.1:3000');
+
+      //usa valor de chave para roteamento de mensagem.
+      function rotear( chaveObjecti, objectoElementos )
+      {}
+
+      ws.onmessage = function(event)
+      {
+        const rpm = document.querySelector("#data");
+        const rumo = document.querySelector("#data2");
+        const pressao = document.querySelector("#data3");
+        let resposta = undefined;
+
+        try
+        {
+          resposta = JSON.parse( event.data );
+        }
+        catch ( err )
+        {
+          console.log( "falha no JSON.parse(): ", err );
+        }
+
+        const p = document.createElement( "p" );
+        p.innerText = JSON.stringify(resposta);
+
+        if ( typeof resposta == "object" )
+        {
+          if ( resposta['/bike/rpm'] != undefined )
+          {
+            rpm.appendChild( p );
+          }
+          else if ( resposta['/bike/rumo'] != undefined )
+          {
+            rumo.appendChild( p );
+          }
+          else if ( resposta['/bike/pressao'] != undefined  )
+          {
+            pressao.appendChild( p );
+          }
+          else
+          {
+            console.log( "resposta incerta:", resposta );
+          }
+        }
+        else
+        {
+          console.log("resposta não é um objeto: " + (typeof resposta));
+        }
+      }
+
+      ws.onopen = function()
+      {
+        console.log( "conectando" );
+      }
+
+      ws.onclose = function()
+      {
+        console.log( "desconectando" );
+      }
+    </script>
+  </body>
+</html>
